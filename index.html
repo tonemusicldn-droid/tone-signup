@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tone - Stay Connected</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #080808; --white: #f0ede6; --acid: #c8ff00; --mid: #555; --font-display: 'Bebas Neue', sans-serif; --font-body: 'DM Mono', monospace; }
+    html, body { height: 100%; background: var(--black); color: var(--white); font-family: var(--font-body); overflow-x: hidden; }
+    .page { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; max-width: 640px; margin: 0 auto; padding: 0 24px; }
+    header { padding: 40px 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e1e1e; }
+    .logo { font-family: var(--font-display); font-size: 2.8rem; letter-spacing: 0.08em; color: var(--white); line-height: 1; }
+    .logo span { color: var(--acid); }
+    .tag { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); border: 1px solid #2a2a2a; padding: 4px 10px; }
+    main { padding: 60px 0 40px; display: flex; flex-direction: column; justify-content: center; }
+    .eyebrow { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--acid); margin-bottom: 20px; }
+    h1 { font-family: var(--font-display); font-size: clamp(3.5rem, 12vw, 6rem); line-height: 0.92; color: var(--white); margin-bottom: 32px; }
+    h1 em { color: var(--acid); font-style: normal; }
+    .subtext { font-size: 0.75rem; line-height: 1.8; color: var(--mid); max-width: 400px; margin-bottom: 48px; }
+    .divider { width: 40px; height: 1px; background: var(--acid); margin-bottom: 40px; }
+    form { display: flex; flex-direction: column; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mid); }
+    input { background: transparent; border: none; border-bottom: 1px solid #2a2a2a; color: var(--white); font-family: var(--font-body); font-size: 0.9rem; padding: 12px 0; outline: none; transition: border-color 0.2s; width: 100%; }
+    input::placeholder { color: #333; }
+    input:focus { border-bottom-color: var(--acid); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    button[type="submit"] { width: 100%; background: var(--acid); color: var(--black); border: none; font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.12em; padding: 18px 32px; cursor: pointer; margin-top: 12px; }
+    button[type="submit"]:hover { background: #d4ff1a; }
+    button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
+    .spinner { display: none; width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.2); border-top-color: var(--black); border-radius: 50%; animation: spin 0.6s linear infinite; margin: 0 auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    button.loading .btn-text { display: none; }
+    button.loading .spinner { display: block; }
+    .success-state { display: none; text-align: center; padding: 48px 0; }
+    .success-state.visible { display: block; }
+    .success-state h2 { font-family: var(--font-display); font-size: 3rem; color: var(--acid); margin-bottom: 12px; }
+    .success-state p { font-size: 0.72rem; color: var(--mid); line-height: 1.8; }
+    .error-msg { display: none; font-size: 0.65rem; color: #ff4444; margin-top: 8px; }
+    .error-msg.visible { display: block; }
+    footer { padding: 24px 0 40px; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+    .footer-text { font-size: 0.55rem; letter-spacing: 0.15em; color: #333; text-transform: uppercase; }
+    .dot { width: 6px; height: 6px; background: var(--acid); border-radius: 50%; animation: pulse 2s ease infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header><div class="logo">TONE<span>.</span></div><div class="tag">London</div></header>
+    <main>
+      <div class="eyebrow">// Mailing List</div>
+      <h1>Be First<br/>To <em>Know.</em></h1>
+      <p class="subtext">Tone's first show is coming. Get on the list before anyone else - early access, updates, and everything in between. No noise. Just signal.</p>
+      <div class="divider"></div>
+      <form id="signupForm">
+        <div class="row">
+          <div class="field"><label for="firstName">First Name</label><input type="text" id="firstName" placeholder="Your name" autocomplete="given-name" /></div>
+          <div class="field"><label for="phone">Mobile - optional</label><input type="tel" id="phone" placeholder="+44 7700 000000" autocomplete="tel" /></div>
+        </div>
+        <div class="field"><label for="email">Email *</label><input type="email" id="email" placeholder="your@email.com" autocomplete="email" required /></div>
+        <div class="error-msg" id="errorMsg">Something went wrong. Try again.</div>
+        <button type="submit" id="submitBtn"><span class="btn-text">Lock In My Spot</span><div class="spinner"></div></button>
+      </form>
+      <div class="success-state" id="successState"><div style="font-size:2.5rem;margin-bottom:24px">!</div><h2>You're In.</h2><p>Welcome to the list.<br/>First to know. Always.</p></div>
+    </main>
+    <footer><span class="footer-text">Tone Music London</span><div class="dot"></div><span class="footer-text">No spam. Ever.</span></footer>
+  </div>
+  <script>
+    var form=document.getElementById('signupForm'),btn=document.getElementById('submitBtn'),errorMsg=document.getElementById('errorMsg'),successState=document.getElementById('successState');
+    form.addEventListener('submit',function(e){
+      e.preventDefault();errorMsg.classList.remove('visible');
+      var email=document.getElementById('email').value.trim(),phone=document.getElementById('phone').value.trim(),firstName=document.getElementById('firstName').value.trim();
+      if(!email)return;btn.disabled=true;btn.classList.add('loading');
+      fetch('/.netlify/functions/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,phone:phone,firstName:firstName})})
+      .then(function(res){return res.json().then(function(data){return{ok:res.ok,data:data};});})
+      .then(function(r){
+        if(r.ok&&r.data.success){form.style.display='none';successState.classList.add('visible');}
+        else{throw new Error(r.data.error||'error');}
+      }).catch(function(){errorMsg.textContent='Something went wrong. Please try again.';errorMsg.classList.add('visible');btn.disabled=false;btn.classList.remove('loading');});
+    });
+  </script>
+</body>
+</html>
